@@ -25,6 +25,6 @@ public class Role {
     @Setter @Getter private String role;
 
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "roles", cascade=CascadeType.ALL)
     @Setter @Getter private Set<MyUser> users = new HashSet<MyUser>(0);
 }

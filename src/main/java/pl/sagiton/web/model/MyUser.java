@@ -25,7 +25,7 @@ public class MyUser {
     @Column(name = "password")
     @Setter @Getter private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
             joinColumns = {@JoinColumn(name = "id")},
             inverseJoinColumns = { @JoinColumn(name = "roleId")})

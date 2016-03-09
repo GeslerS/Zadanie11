@@ -55,7 +55,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MyWebInitializer.class, SecurityConfig.class, SpringWebConfig.class, HibernateConfig.class})
 @WebAppConfiguration
-public class accessTest {
+public class AccessTest {
 
     @Autowired
     private WebApplicationContext context;
