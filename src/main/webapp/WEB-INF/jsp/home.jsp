@@ -5,7 +5,12 @@
     <title>Hello</title>
 </head>
 <body>
-<h2> Welcome! You're </h2>
+<h2> Welcome!</h2>
+<% if (request.isUserInRole("ROLE_USER")) { %>
+ROLE: USER </br>
+<%} if (request.isUserInRole("ROLE_ADMIN")) { %>
+ROLE: ADMIN </br>
+<% } %>
 <a href="/logout" />Logout</a>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.sagiton.web.model.MyUser;
+import pl.sagiton.web.model.Role;
 
 
 import java.util.ArrayList;
@@ -28,7 +29,9 @@ public class MyUserDetailsService implements UserDetailsService {
         MyUser user = userService.listUser(username);
 
         List authList = new ArrayList();
-        authList.add(new SimpleGrantedAuthority("ROLE_USER"));
+        for (Role role:user.getRoles()){
+            authList.add(new SimpleGrantedAuthority(role.getRole()));
+        }
 
         return new User(user.getUsername(),user.getPassword(), authList);
     }

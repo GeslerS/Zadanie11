@@ -18,8 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.sagiton.config.*;
 import pl.sagiton.servlet.MyWebInitializer;
 import pl.sagiton.web.model.MyUser;
+import pl.sagiton.web.model.Role;
 import pl.sagiton.web.service.UserService;
 import pl.sagiton.web.service.UserServiceImpl;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -32,8 +36,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringWebConfig.class, HibernateConfigTest.class})
 @WebAppConfiguration
-
-public class userDetailsTest {
+public class userServiceTest {
 
     @Autowired
     SessionFactory sessionFactory;
@@ -47,22 +50,11 @@ public class userDetailsTest {
     @Before
     public void test(){
         session = sessionFactory.openSession();
-    //    Transaction transaction = session.beginTransaction();
-
     }
     @Test
     public void userServiceTest(){
 
-        MyUser user = new MyUser();
-        user.setUsername("Szymon");
-        user.setPassword("Szymon123");
-        user.setId(1);
 
-        session.save(user);
-
-        MyUser user2 = userService.listUser("Szymon");
-        assertEquals("Szymon",user2.getUsername());
-        assertEquals("Szymon123", user2.getPassword());
 
     }
 

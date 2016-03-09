@@ -1,5 +1,6 @@
 package pl.sagiton.web.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public MyUser listUser(String username) {
-        return userDAO.listUser(username);
+        MyUser user = userDAO.listUser(username);
+        Hibernate.initialize(user.getRoles());
+
+        return user;
+
     }
 }
