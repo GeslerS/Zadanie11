@@ -13,10 +13,8 @@ import pl.sagiton.web.model.Role;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-/**
- * Created by szymon on 03.03.16.
- */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
@@ -24,15 +22,21 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(userService.listUser(username) == null) throw new UsernameNotFoundException("MyUser doesn't exist (" + username +")");
 
-        MyUser user = userService.listUser(username);
+        if (userService.getUser(username) == null)
+            throw new UsernameNotFoundException("MyUser doesn't exist (" + username +")");
 
+        MyUser user = userService.getUser(username);
+
+        return new User(user.getUsername(),user.getPassword(), authorityList(user.getRoles()));
+    }
+
+
+    private List<SimpleGrantedAuthority> authorityList(Set<Role> userSet){
         List authList = new ArrayList();
-        for (Role role:user.getRoles()){
+        for (Role role : userSet){
             authList.add(new SimpleGrantedAuthority(role.getRole()));
         }
-
-        return new User(user.getUsername(),user.getPassword(), authList);
+        return authList;
     }
 }

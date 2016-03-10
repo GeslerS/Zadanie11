@@ -11,9 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import pl.sagiton.web.service.MyUserDetailsService;
 
 
-/**
- * Created by szymon on 03.03.16.
- */
 @Configuration
 @EnableWebSecurity
 @ComponentScan({"pl.sagiton.web"})
@@ -26,17 +23,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http)throws Exception{
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/home").access("isAuthenticated()")
+                .antMatchers("/user/*").access("isAuthenticated()")
+                .antMatchers("/admin/*").access("hasRole('ROLE_ADMIN')")
                 .and()
         .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/home")
-                .failureUrl("/denied")
+                .failureUrl("/login?error")
                 .permitAll()
                 .and()
         .logout().logoutUrl("/logout");
 
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

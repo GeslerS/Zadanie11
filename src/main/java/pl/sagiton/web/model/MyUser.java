@@ -7,9 +7,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by szymon on 03.03.16.
- */
+
 @Entity
 @Table(name="USERS")
 public class MyUser {

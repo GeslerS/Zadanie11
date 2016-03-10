@@ -1,13 +1,10 @@
 package pl.sagiton.web.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sagiton.web.model.MyUser;
 import pl.sagiton.web.model.UserDAO;
-
-import java.util.List;
 
 /**
  * Created by szymon on 03.03.16.
@@ -19,11 +16,6 @@ public class UserServiceImpl implements UserService {
     UserDAO userDAO;
 
     @Transactional
-    public MyUser listUser(String username) {
-        MyUser user = userDAO.listUser(username);
-        Hibernate.initialize(user.getRoles());
-
-        return user;
-
-    }
+    public MyUser getUser(String username) {
+        return userDAO.getUser(username);    }
 }
