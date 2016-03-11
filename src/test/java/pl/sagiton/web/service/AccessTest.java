@@ -9,8 +9,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,6 +48,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MyWebInitializer.class, SecurityConfig.class, SpringWebConfig.class, HibernateConfig.class})
 @WebAppConfiguration
+@TestExecutionListeners(listeners={ServletTestExecutionListener.class,
+        DependencyInjectionTestExecutionListener.class,
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
+        WithSecurityContextTestExecutionListener.class})
 public class AccessTest {
 
     @Autowired
@@ -104,7 +116,7 @@ public class AccessTest {
 
 
         mvc.perform(formLogin().user("Donna").password("Donna123")).andExpect(authenticated());
-        
+        mvc.perform(get("/home")).andExpect(authenticated());
     }
 
 
