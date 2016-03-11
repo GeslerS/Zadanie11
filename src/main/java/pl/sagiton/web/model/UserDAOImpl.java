@@ -15,7 +15,7 @@ public class UserDAOImpl implements UserDAO {
     public MyUser getUser(String username) {
 
       return (MyUser) sessionFactory.getCurrentSession()
-                .createQuery("FROM MyUser E left join fetch E.roles WHERE E.username = :username").
+                .createQuery("FROM MyUser E join fetch E.roles WHERE E.username = :username").
                       setParameter("username",username).uniqueResult();
 
     }

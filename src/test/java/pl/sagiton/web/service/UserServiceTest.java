@@ -11,8 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sagiton.config.HibernateConfig;
-import pl.sagiton.config.SpringWebConfig;
+import pl.sagiton.servlet.RootConfig;
 import pl.sagiton.web.model.MyUser;
 import pl.sagiton.web.model.Role;
 
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringWebConfig.class, HibernateConfig.class})
+@ContextConfiguration(classes = {RootConfig.class})
 @WebAppConfiguration
 @Transactional
 public class UserServiceTest {

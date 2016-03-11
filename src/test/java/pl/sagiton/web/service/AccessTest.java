@@ -1,6 +1,6 @@
 package pl.sagiton.web;
 
-
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -26,8 +29,10 @@ import pl.sagiton.config.HibernateConfig;
 import pl.sagiton.config.SecurityConfig;
 import pl.sagiton.config.SpringWebConfig;
 import pl.sagiton.servlet.MyWebInitializer;
+import pl.sagiton.servlet.RootConfig;
 import pl.sagiton.web.model.MyUser;
 import pl.sagiton.web.model.Role;
+import pl.sagiton.web.service.MyUserDetailsService;
 import pl.sagiton.web.service.UserService;
 
 import javax.servlet.Filter;
@@ -46,8 +51,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MyWebInitializer.class, SecurityConfig.class, SpringWebConfig.class, HibernateConfig.class})
+@ContextConfiguration(classes = {RootConfig.class})
 @WebAppConfiguration
+@TestExecutionListeners(listeners={ServletTestExecutionListener.class,
+        DependencyInjectionTestExecutionListener.class,
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
+        WithSecurityContextTestExecutionListener.class})
 public class AccessTest {
 
     @Autowired
@@ -83,7 +93,8 @@ public class AccessTest {
     }
 
     @Test
-    public void authorizationTest() throws Exception {Role role = new Role();
+    public void authorizationTest() throws Exception {
+        Role role = new Role();
         role.setRole("ROLE_USER");
 
         Role role2 = new Role();
@@ -110,7 +121,7 @@ public class AccessTest {
         session.clear();
 
 
-        mvc.perform(formLogin().user("Donna").password("Donna123")).andExpect(authenticated());
+        mvc.perform(formLogin().user("Donna").password("Donna123")).andExpect(authenticated().withRoles("USER","ADMIN"));
     }
 
 
