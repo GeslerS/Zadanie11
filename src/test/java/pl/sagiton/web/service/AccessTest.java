@@ -48,11 +48,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MyWebInitializer.class, SecurityConfig.class, SpringWebConfig.class, HibernateConfig.class})
 @WebAppConfiguration
-@TestExecutionListeners(listeners={ServletTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
 public class AccessTest {
 
     @Autowired
@@ -116,7 +111,6 @@ public class AccessTest {
 
 
         mvc.perform(formLogin().user("Donna").password("Donna123")).andExpect(authenticated());
-        mvc.perform(get("/home")).andExpect(authenticated());
     }
 
 
